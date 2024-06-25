@@ -22,19 +22,16 @@ import { CorreiosModule } from './correios/correios.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      envFilePath: ['.env.development.local'],
-    }),
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      database: process.env.DB_DATABASE,
-      host: process.env.DB_HOST,
-      password: process.env.DB_PASSWORD,
-      port: Number(process.env.DB_PORT),
-      username: process.env.DB_USERNAME,
-      entities: [`${__dirname}/**/*.entity{.js,.ts}`],
-      migrations: [`${__dirname}/migration/{.ts,*.js}`],
-      migrationsRun: true,
+      host: process.env.DB_HOST || 'localhost',
+      port: +process.env.DB_PORT || 5432,
+      username: process.env.DB_USERNAME || 'postgres',
+      password: process.env.DB_PASSWORD || 'root',
+      database: process.env.DB_DATABASE || 'postgres',
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: true,
     }),
     UserModule,
     StateModule,
